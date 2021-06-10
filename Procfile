@@ -1,1 +1,1 @@
-web: uvicorn --workers 3 api.main:api
+web: uvicorn api.main:api --host=0.0.0.0 --port=${PORT:-5000} --workers 3 
