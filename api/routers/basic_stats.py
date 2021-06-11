@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from ruts import BasicStats
-from ruts.constants import BASIC_STATS_DESC
 
 router = APIRouter(
     prefix="/bs",
@@ -16,7 +15,7 @@ async def get_stats(text: str):
 
     - **text**: текст, для которого вычисляются статистики
     """
-    bs = BasicStats(text)
+    bs = BasicStats(text, normalize=True)
     return bs.get_stats()
 
 
@@ -27,6 +26,8 @@ async def get_stat(text: str, stat: str):
 
     - **text**: текст, для которого вычисляются статистики
     - **stat**: наименование статистики, одно из:
+        - **c_letters**: распределение слов по количеству букв
+        - **c_syllables**: распределение слов по количеству слогов
         - **n_sents**: предложения
         - **n_words**: слова
         - **n_unique_words**: уникальные слова
@@ -40,8 +41,17 @@ async def get_stat(text: str, stat: str):
         - **n_spaces**: пробелы
         - **n_syllables**: слоги
         - **n_punctuations**: знаки препинания
+        - **p_unique_words**: нормализованное количество уникальных слов
+        - **p_long_words**: нормализованное количество длинных слов
+        - **p_complex_words**: нормализованное количество сложных слов
+        - **p_simple_words**: нормализованное количество простых слов
+        - **p_monosyllable_words**: нормализованное количество односложных слов
+        - **p_polysyllable_words**: нормализованное количество многосложных слов
+        - **p_letters**: нормализованное количество букв
+        - **p_spaces**: нормализованное количество пробелов
+        - **p_punctuations**: нормализованное количество знаков препинания
     """
-    if stat not in BASIC_STATS_DESC:
+    bs = BasicStats(text, normalize=True)
+    if stat not in bs.__dict__:
         raise HTTPException(status_code=404, detail="Некорректно указана статистика")
-    bs = BasicStats(text)
     return bs.get_stats()[stat]
