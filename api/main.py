@@ -1,11 +1,15 @@
 from fastapi import FastAPI
 
-from .routers import basic_stats
+from .routers import basic_stats, readability_stats
 
 tags_metadata = [
     {
         "name": "bs",
         "description": "Вычисление основных статистик текста.",
+    },
+    {
+        "name": "rs",
+        "description": "Вычисление метрик удобочитаемости текста.",
     },
 ]
 
@@ -18,6 +22,7 @@ api = FastAPI(
 
 
 api.include_router(basic_stats.router)
+api.include_router(readability_stats.router)
 
 
 @api.get("/")
