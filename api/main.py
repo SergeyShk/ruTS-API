@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .routers import basic_stats, readability_stats
+from .routers import basic_stats, morph_stats, readability_stats
 
 tags_metadata = [
     {
@@ -11,17 +11,22 @@ tags_metadata = [
         "name": "rs",
         "description": "Вычисление метрик удобочитаемости текста.",
     },
+    {
+        "name": "ms",
+        "description": "Вычисление морфологических статистик текста.",
+    },
 ]
 
 api = FastAPI(
     title="ruTS-API",
     description="API для библиотеки ruTS",
-    version="0.1.0",
+    version="0.2.0",
     openapi_tags=tags_metadata,
 )
 
 
 api.include_router(basic_stats.router)
+api.include_router(morph_stats.router)
 api.include_router(readability_stats.router)
 
 
