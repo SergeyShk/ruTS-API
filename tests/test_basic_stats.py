@@ -12,7 +12,7 @@ text = "Живет свободно только тот, кто находит �
 
 
 def test_get_stats():
-    response = client.get("/bs/?text=" + text)
+    response = client.get("/bs/", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {
         "c_letters": {"1": 1, "3": 2, "5": 2, "6": 2, "7": 2, "8": 1, "10": 1},
@@ -43,149 +43,149 @@ def test_get_stats():
 
 
 def test_get_stat_error():
-    response = client.get("/bs/foo?text=" + text)
+    response = client.get("/bs/foo", params={"text": text})
     assert response.status_code == 404
 
 
 def test_c_letters():
-    response = client.get("/bs/c_letters?text=" + text)
+    response = client.get("/bs/c_letters", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"1": 1, "3": 2, "5": 2, "6": 2, "7": 2, "8": 1, "10": 1}
 
 
 def test_c_syllables():
-    response = client.get("/bs/c_syllables?text=" + text)
+    response = client.get("/bs/c_syllables", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"0": 1, "1": 2, "2": 4, "3": 3, "5": 1}
 
 
 def test_n_chars():
-    response = client.get("/bs/n_chars?text=" + text)
+    response = client.get("/bs/n_chars", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 73
 
 
 def test_n_complex_words():
-    response = client.get("/bs/n_complex_words?text=" + text)
+    response = client.get("/bs/n_complex_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 1
 
 
 def test_n_letters():
-    response = client.get("/bs/n_letters?text=" + text)
+    response = client.get("/bs/n_letters", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 61
 
 
 def test_n_long_words():
-    response = client.get("/bs/n_long_words?text=" + text)
+    response = client.get("/bs/n_long_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 6
 
 
 def test_n_monosyllable_words():
-    response = client.get("/bs/n_monosyllable_words?text=" + text)
+    response = client.get("/bs/n_monosyllable_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 2
 
 
 def test_n_polysyllable_words():
-    response = client.get("/bs/n_polysyllable_words?text=" + text)
+    response = client.get("/bs/n_polysyllable_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 8
 
 
 def test_n_sents():
-    response = client.get("/bs/n_sents?text=" + text)
+    response = client.get("/bs/n_sents", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 1
 
 
 def test_n_simple_words():
-    response = client.get("/bs/n_simple_words?text=" + text)
+    response = client.get("/bs/n_simple_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 9
 
 
 def test_n_spaces():
-    response = client.get("/bs/n_spaces?text=" + text)
+    response = client.get("/bs/n_spaces", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 10
 
 
 def test_n_syllables():
-    response = client.get("/bs/n_syllables?text=" + text)
+    response = client.get("/bs/n_syllables", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 24
 
 
 def test_n_unique_words():
-    response = client.get("/bs/n_unique_words?text=" + text)
+    response = client.get("/bs/n_unique_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 11
 
 
 def test_n_words():
-    response = client.get("/bs/n_words?text=" + text)
+    response = client.get("/bs/n_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 11
 
 
 def test_n_punctuations():
-    response = client.get("/bs/n_punctuations?text=" + text)
+    response = client.get("/bs/n_punctuations", params={"text": text})
     assert response.status_code == 200
     assert response.json() == 2
 
 
 def test_p_unique_words():
-    response = client.get("/bs/p_unique_words?text=" + text)
+    response = client.get("/bs/p_unique_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(1.0, rel=0.1)
 
 
 def test_p_long_words():
-    response = client.get("/bs/p_long_words?text=" + text)
+    response = client.get("/bs/p_long_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.55, rel=0.1)
 
 
 def test_p_complex_words():
-    response = client.get("/bs/p_complex_words?text=" + text)
+    response = client.get("/bs/p_complex_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.1, rel=0.1)
 
 
 def test_p_simple_words():
-    response = client.get("/bs/p_simple_words?text=" + text)
+    response = client.get("/bs/p_simple_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.8, rel=0.1)
 
 
 def test_p_monosyllable_words():
-    response = client.get("/bs/p_monosyllable_words?text=" + text)
+    response = client.get("/bs/p_monosyllable_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.2, rel=0.1)
 
 
 def test_p_polysyllable_words():
-    response = client.get("/bs/p_polysyllable_words?text=" + text)
+    response = client.get("/bs/p_polysyllable_words", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.7, rel=0.1)
 
 
 def test_p_letters():
-    response = client.get("/bs/p_letters?text=" + text)
+    response = client.get("/bs/p_letters", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.8, rel=0.1)
 
 
 def test_p_spaces():
-    response = client.get("/bs/p_spaces?text=" + text)
+    response = client.get("/bs/p_spaces", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.15, rel=0.1)
 
 
 def test_p_punctuations():
-    response = client.get("/bs/p_punctuations?text=" + text)
+    response = client.get("/bs/p_punctuations", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(0.027, rel=0.1)

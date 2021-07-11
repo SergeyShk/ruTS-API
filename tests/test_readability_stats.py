@@ -12,7 +12,7 @@ text = "Живет свободно только тот, кто находит �
 
 
 def test_get_stats():
-    response = client.get("/rs/?text=" + text)
+    response = client.get("/rs/", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {
         "flesch_kincaid_grade": 4.727272727272727,
@@ -25,41 +25,41 @@ def test_get_stats():
 
 
 def test_get_stat_error():
-    response = client.get("/rs/foo?text=" + text)
+    response = client.get("/rs/foo", params={"text": text})
     assert response.status_code == 404
 
 
 def test_flesch_kincaid_grade():
-    response = client.get("/rs/flesch_kincaid_grade?text=" + text)
+    response = client.get("/rs/flesch_kincaid_grade", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(4.7, rel=0.1)
 
 
 def test_flesch_reading_easy():
-    response = client.get("/rs/flesch_reading_easy?text=" + text)
+    response = client.get("/rs/flesch_reading_easy", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(61.4, rel=0.1)
 
 
 def test_coleman_liau_index():
-    response = client.get("/rs/coleman_liau_index?text=" + text)
+    response = client.get("/rs/coleman_liau_index", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(6.7, rel=0.1)
 
 
 def test_smog_index():
-    response = client.get("/rs/smog_index?text=" + text)
+    response = client.get("/rs/smog_index", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(8.9, rel=0.1)
 
 
 def test_automated_readability_index():
-    response = client.get("/rs/automated_readability_index?text=" + text)
+    response = client.get("/rs/automated_readability_index", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(6.7, rel=0.1)
 
 
 def test_lix():
-    response = client.get("/rs/lix?text=" + text)
+    response = client.get("/rs/lix", params={"text": text})
     assert response.status_code == 200
     assert response.json() == pytest.approx(65.5, rel=0.1)

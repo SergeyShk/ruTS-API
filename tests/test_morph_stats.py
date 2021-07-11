@@ -11,7 +11,7 @@ text = "Живет свободно только тот, кто находит �
 
 
 def test_get_stats():
-    response = client.get("/ms/?text=" + text)
+    response = client.get("/ms/", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {
         "pos": {"VERB": 2, "ADVB": 2, "ADJF": 2, "NPRO": 1, "NOUN": 3, "PREP": 1},
@@ -30,78 +30,78 @@ def test_get_stats():
 
 
 def test_get_stat_error():
-    response = client.get("/ms/foo?text=" + text)
+    response = client.get("/ms/foo", params={"text": text})
     assert response.status_code == 404
 
 
 def test_pos():
-    response = client.get("/ms/pos?text=" + text)
+    response = client.get("/ms/pos", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"VERB": 2, "ADVB": 2, "ADJF": 2, "NPRO": 1, "NOUN": 3, "PREP": 1}
 
 
 def test_animacy():
-    response = client.get("/ms/animacy?text=" + text)
+    response = client.get("/ms/animacy", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"null": 8, "inan": 3}
 
 
 def test_aspect():
-    response = client.get("/ms/aspect?text=" + text)
+    response = client.get("/ms/aspect", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"impf": 2, "null": 9}
 
 
 def test_case():
-    response = client.get("/ms/case?text=" + text)
+    response = client.get("/ms/case", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"null": 5, "nomn": 2, "accs": 1, "loct": 1, "gent": 2}
 
 
 def test_gender():
-    response = client.get("/ms/gender?text=" + text)
+    response = client.get("/ms/gender", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"null": 5, "masc": 3, "femn": 1, "neut": 2}
 
 
 def test_involvement():
-    response = client.get("/ms/involvement?text=" + text)
+    response = client.get("/ms/involvement", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"null": 11}
 
 
 def test_mood():
-    response = client.get("/ms/mood?text=" + text)
+    response = client.get("/ms/mood", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"indc": 2, "null": 9}
 
 
 def test_number():
-    response = client.get("/ms/number?text=" + text)
+    response = client.get("/ms/number", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"sing": 8, "null": 3}
 
 
 def test_person():
-    response = client.get("/ms/person?text=" + text)
+    response = client.get("/ms/person", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"3per": 2, "null": 9}
 
 
 def test_tense():
-    response = client.get("/ms/tense?text=" + text)
+    response = client.get("/ms/tense", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"pres": 2, "null": 9}
 
 
 def test_transitivity():
-    response = client.get("/ms/transitivity?text=" + text)
+    response = client.get("/ms/transitivity", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"intr": 1, "null": 9, "tran": 1}
 
 
 def test_voice():
-    response = client.get("/ms/voice?text=" + text)
+    response = client.get("/ms/voice", params={"text": text})
     assert response.status_code == 200
     assert response.json() == {"null": 11}
 
