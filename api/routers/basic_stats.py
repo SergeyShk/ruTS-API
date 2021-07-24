@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException
 from ruts import BasicStats
 
@@ -9,7 +11,7 @@ router = APIRouter(
 
 
 @router.get("/", summary="Получение вычисленных статистик")
-async def get_stats(text: str):
+async def get_stats(text: str) -> Any:
     """
     Аргументы:
 
@@ -20,7 +22,7 @@ async def get_stats(text: str):
 
 
 @router.get("/{stat}", summary="Получение определенной статистики")
-async def get_stat(text: str, stat: str):
+async def get_stat(text: str, stat: str) -> Any:
     """
     Аргументы:
 

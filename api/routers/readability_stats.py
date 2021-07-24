@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException
 from ruts import ReadabilityStats
 from ruts.constants import READABILITY_STATS_DESC
@@ -10,7 +12,7 @@ router = APIRouter(
 
 
 @router.get("/", summary="Получение вычисленных метрик")
-async def get_stats(text: str):
+async def get_stats(text: str) -> Any:
     """
     Аргументы:
 
@@ -21,7 +23,7 @@ async def get_stats(text: str):
 
 
 @router.get("/{stat}", summary="Получение определенной метрики")
-async def get_stat(text: str, stat: str):
+async def get_stat(text: str, stat: str) -> Any:
     """
     Аргументы:
 

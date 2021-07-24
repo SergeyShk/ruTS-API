@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Any, Tuple
 
 from fastapi import APIRouter, HTTPException, Query
 from ruts import MorphStats
@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.get("/", summary="Получение вычисленных статистик")
-async def get_stats(text: str):
+async def get_stats(text: str) -> Any:
     """
     Аргументы:
 
@@ -27,7 +27,7 @@ async def explain_text(
     text: str,
     stats: Tuple[str, ...] = Query(None, description="Кортеж выбранных статистик"),
     filter_none: bool = False,
-):
+) -> Any:
     """
     Аргументы:
 
@@ -54,7 +54,7 @@ async def explain_text(
 
 
 @router.get("/{stat}", summary="Получение определенной статистики")
-async def get_stat(text: str, stat: str):
+async def get_stat(text: str, stat: str) -> Any:
     """
     Аргументы:
 
