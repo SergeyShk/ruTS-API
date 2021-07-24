@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc lint reformat test help
+.PHONY: clean clean-test clean-pyc lint reformat test server help
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
@@ -29,13 +29,13 @@ clean-test: ## Удалить артефакты тестирования
 	rm -fr .mypy_cache
 
 lint: ## Проверить код с помощью flake8
-	flake8 api tests
+	poetry run flakehell lint api tests
 
 reformat: ## Форматировать код с помощью black
-	black --line-length 99 api tests
+	poetry run black --config pyproject.toml api tests
 
 test: ## Запустить тесты
-	pytest
+	poetry run pytest
 
 server: ## Запустить сервер FastAPI
 	uvicorn api.main:api --reload --port=8008 --workers 3

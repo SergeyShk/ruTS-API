@@ -7,12 +7,15 @@ matrix:
     - python: 3.8
       dist: bionic
 
+before_install:
+    - pip install -U pip
+    - pip install poetry
+
 install:
-    - "pip install pipenv pytest-cov codecov"
-    - "pipenv install --dev"
+    - poetry install
 
 script:
-    - "python -m pytest --cov=api --cov-fail-under=70"
+    - poetry run pytest --cov api --cov-fail-under 80
 
 after_success:
     - codecov
