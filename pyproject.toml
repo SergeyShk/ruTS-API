@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "ruts-API"
-version = "0.3.0"
+version = "0.4.0"
 homepage = "https://ruts-api.herokuapp.com/"
 repository = "https://github.com/SergeyShk/ruTS-API"
 documentation = "https://ruts-api.herokuapp.com/docs"
