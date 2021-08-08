@@ -1,6 +1,7 @@
-from typing import Any
+from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from ruts import BasicStats
 
 router = APIRouter(
@@ -10,24 +11,20 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary="Получение вычисленных статистик")
-async def get_stats(text: str) -> Any:
+class Item(BaseModel):
+    text: str
+    normalize: Optional[bool] = False
+    stat: Optional[str] = ""
+
+
+@router.post("/", summary="Получение вычисленных статистик")
+async def get_stats(item: Item) -> Any:
     """
     Аргументы:
 
     - **text**: текст, для которого вычисляются статистики
-    """
-    bs = BasicStats(text, normalize=True)
-    return bs.get_stats()
-
-
-@router.get("/{stat}", summary="Получение определенной статистики")
-async def get_stat(text: str, stat: str) -> Any:
-    """
-    Аргументы:
-
-    - **text**: текст, для которого вычисляются статистики
-    - **stat**: наименование статистики, одно из:
+    - **normalize**: вычислять нормализованные статистики
+    - **stat**: наименование конкретной статистики, одно из:
         - **c_letters**: распределение слов по количеству букв
         - **c_syllables**: распределение слов по количеству слогов
         - **n_sents**: предложения
@@ -53,7 +50,11 @@ async def get_stat(text: str, stat: str) -> Any:
         - **p_spaces**: нормализованное количество пробелов
         - **p_punctuations**: нормализованное количество знаков препинания
     """
-    bs = BasicStats(text, normalize=True)
-    if stat not in bs.__dict__:
+    bs = BasicStats(item.text, normalize=item.normalize)
+    stats = bs.get_stats()
+    if not item.stat:
+        return stats
+    elif item.stat in bs.__dict__:
+        return stats[item.stat]
+    else:
         raise HTTPException(status_code=404, detail="Некорректно указана статистика")
-    return bs.get_stats()[stat]

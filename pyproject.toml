@@ -86,7 +86,7 @@ extended_default_ignore = []
 
 [tool.flakehell.plugins]
 pylint = ["+*", "-E203", "-E266", "-E501", "-W503"]
-pyflakes = ["+*", "-F401"]
+pyflakes = ["+*"]
 "flake8-*" = ["+*", "-B008"]
 mccabe = ["+*"]
 pep8-naming = ["+*"]
