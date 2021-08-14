@@ -12,7 +12,7 @@ text = "Живет свободно только тот, кто находит �
 
 
 def test_get_stats():
-    response = client.get("/ds/", params={"text": text})
+    response = client.post("/ds/", json={"text": text})
     assert response.status_code == 200
     assert response.json() == {
         "ttr": 1,
@@ -33,89 +33,30 @@ def test_get_stats():
 
 
 def test_get_stat_error():
-    response = client.get("/ds/foo", params={"text": text})
+    response = client.post("/bs/", json={"text": text, "stat": "foo"})
     assert response.status_code == 404
 
 
-def test_ttr():
-    response = client.get("/ds/ttr", params={"text": text})
+@pytest.mark.parametrize(
+    "stat, expected",
+    [
+        ("ttr", pytest.approx(1.0, rel=0.1)),
+        ("rttr", pytest.approx(3.3, rel=0.1)),
+        ("cttr", pytest.approx(2.3, rel=0.1)),
+        ("httr", pytest.approx(1.0, rel=0.1)),
+        ("sttr", pytest.approx(1.0, rel=0.1)),
+        ("mttr", pytest.approx(0.0, rel=0.1)),
+        ("dttr", pytest.approx(0.0, rel=0.1)),
+        ("mattr", pytest.approx(1.0, rel=0.1)),
+        ("msttr", pytest.approx(1.0, rel=0.1)),
+        ("mtld", pytest.approx(0.0, rel=0.1)),
+        ("mamtld", pytest.approx(1.0, rel=0.1)),
+        ("hdd", pytest.approx(-1.0, rel=0.1)),
+        ("simpson_index", pytest.approx(0.0, rel=0.1)),
+        ("hapax_index", pytest.approx(0.0, rel=0.1)),
+    ],
+)
+def test_get_stat(stat, expected):
+    response = client.post("/ds/", json={"text": text, "stat": stat})
     assert response.status_code == 200
-    assert response.json() == pytest.approx(1.0, rel=0.1)
-
-
-def test_rttr():
-    response = client.get("/ds/rttr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(3.3, rel=0.1)
-
-
-def test_cttr():
-    response = client.get("/ds/cttr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(2.3, rel=0.1)
-
-
-def test_httr():
-    response = client.get("/ds/httr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(1.0, rel=0.1)
-
-
-def test_sttr():
-    response = client.get("/ds/sttr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(1.0, rel=0.1)
-
-
-def test_mttr():
-    response = client.get("/ds/mttr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(0.0, rel=0.1)
-
-
-def test_dttr():
-    response = client.get("/ds/dttr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(0.0, rel=0.1)
-
-
-def test_mattr():
-    response = client.get("/ds/mattr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(1.0, rel=0.1)
-
-
-def test_msttr():
-    response = client.get("/ds/msttr", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(1.0, rel=0.1)
-
-
-def test_mtld():
-    response = client.get("/ds/mtld", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(0.0, rel=0.1)
-
-
-def test_mamtld():
-    response = client.get("/ds/mamtld", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(1.0, rel=0.1)
-
-
-def test_hdd():
-    response = client.get("/ds/hdd", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(-1.0, rel=0.1)
-
-
-def test_simpson_index():
-    response = client.get("/ds/simpson_index", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(0.0, rel=0.1)
-
-
-def test_hapax_index():
-    response = client.get("/ds/hapax_index", params={"text": text})
-    assert response.status_code == 200
-    assert response.json() == pytest.approx(0.0, rel=0.1)
+    assert response.json() == expected

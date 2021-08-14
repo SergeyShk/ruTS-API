@@ -16,6 +16,15 @@ class Item(BaseModel):
     normalize: Optional[bool] = False
     stat: Optional[str] = ""
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "text": "Живет свободно только тот, кто находит радость в исполнении своего долга.",
+                "normalize": False,
+                "stat": "",
+            }
+        }
+
 
 @router.post("/", summary="Получение вычисленных статистик")
 async def get_stats(item: Item) -> Any:

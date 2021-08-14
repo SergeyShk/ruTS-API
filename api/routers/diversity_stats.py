@@ -1,6 +1,7 @@
-from typing import Any
+from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from ruts import DiversityStats
 from ruts.constants import DIVERSITY_STATS_DESC
 
@@ -11,19 +12,21 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary="Получение вычисленных метрик")
-async def get_stats(text: str) -> Any:
-    """
-    Аргументы:
+class Item(BaseModel):
+    text: str
+    stat: Optional[str] = ""
 
-    - **text**: текст, для которого вычисляются статистики
-    """
-    ds = DiversityStats(text)
-    return ds.get_stats()
+    class Config:
+        schema_extra = {
+            "example": {
+                "text": "Живет свободно только тот, кто находит радость в исполнении своего долга.",
+                "stat": "",
+            }
+        }
 
 
-@router.get("/{stat}", summary="Получение определенной метрики")
-async def get_stat(text: str, stat: str) -> Any:
+@router.post("/", summary="Получение вычисленных статистик")
+async def get_stats(item: Item) -> Any:
     """
     Аргументы:
 
@@ -44,7 +47,10 @@ async def get_stat(text: str, stat: str) -> Any:
         - **simpson_index**: Индекс Симпсона
         - **hapax_index**: Гапакс-индекс
     """
-    ds = DiversityStats(text)
-    if stat not in DIVERSITY_STATS_DESC:
+    ds = DiversityStats(item.text)
+    if not item.stat:
+        return ds.get_stats()
+    elif item.stat in DIVERSITY_STATS_DESC:
+        return getattr(ds, item.stat)
+    else:
         raise HTTPException(status_code=404, detail="Некорректно указана метрика")
-    return getattr(ds, stat)
