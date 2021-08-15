@@ -28,7 +28,7 @@ tags_metadata = [
 api = FastAPI(
     title="ruTS-API",
     description="API для библиотеки ruTS",
-    version="0.5.0",
+    version="0.6.0",
     openapi_tags=tags_metadata,
 )
 
