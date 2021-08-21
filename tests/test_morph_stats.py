@@ -11,7 +11,7 @@ text = "Живет свободно только тот, кто находит �
 
 
 def test_get_stats():
-    response = client.get("/ms/", params={"text": text})
+    response = client.post("/ms/", json={"text": text})
     assert response.status_code == 200
     assert response.json() == {
         "pos": {"VERB": 2, "ADVB": 2, "ADJF": 2, "NPRO": 1, "NOUN": 3, "PREP": 1},
@@ -29,85 +29,104 @@ def test_get_stats():
     }
 
 
-def test_get_stat_error():
-    response = client.get("/ms/foo", params={"text": text})
+def test_get_stats_filter_none():
+    response = client.post("/ms/", json={"text": text, "filter_none": True})
+    assert response.status_code == 200
+    assert response.json() == {
+        "pos": {"VERB": 2, "ADVB": 2, "ADJF": 2, "NPRO": 1, "NOUN": 3, "PREP": 1},
+        "animacy": {"inan": 3},
+        "aspect": {"impf": 2},
+        "case": {"nomn": 2, "accs": 1, "loct": 1, "gent": 2},
+        "gender": {"masc": 3, "femn": 1, "neut": 2},
+        "involvement": {},
+        "mood": {"indc": 2},
+        "number": {"sing": 8},
+        "person": {"3per": 2},
+        "tense": {"pres": 2},
+        "transitivity": {"intr": 1, "tran": 1},
+        "voice": {},
+    }
+
+
+def test_get_stats_error():
+    response = client.post("/ms/", json={"text": text, "stats": ("foo",)})
     assert response.status_code == 404
 
 
 def test_pos():
-    response = client.get("/ms/pos", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("pos",)})
     assert response.status_code == 200
     assert response.json() == {"VERB": 2, "ADVB": 2, "ADJF": 2, "NPRO": 1, "NOUN": 3, "PREP": 1}
 
 
 def test_animacy():
-    response = client.get("/ms/animacy", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("animacy",)})
     assert response.status_code == 200
     assert response.json() == {"null": 8, "inan": 3}
 
 
 def test_aspect():
-    response = client.get("/ms/aspect", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("aspect",)})
     assert response.status_code == 200
     assert response.json() == {"impf": 2, "null": 9}
 
 
 def test_case():
-    response = client.get("/ms/case", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("case",)})
     assert response.status_code == 200
     assert response.json() == {"null": 5, "nomn": 2, "accs": 1, "loct": 1, "gent": 2}
 
 
 def test_gender():
-    response = client.get("/ms/gender", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("gender",)})
     assert response.status_code == 200
     assert response.json() == {"null": 5, "masc": 3, "femn": 1, "neut": 2}
 
 
 def test_involvement():
-    response = client.get("/ms/involvement", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("involvement",)})
     assert response.status_code == 200
     assert response.json() == {"null": 11}
 
 
 def test_mood():
-    response = client.get("/ms/mood", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("mood",)})
     assert response.status_code == 200
     assert response.json() == {"indc": 2, "null": 9}
 
 
 def test_number():
-    response = client.get("/ms/number", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("number",)})
     assert response.status_code == 200
     assert response.json() == {"sing": 8, "null": 3}
 
 
 def test_person():
-    response = client.get("/ms/person", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("person",)})
     assert response.status_code == 200
     assert response.json() == {"3per": 2, "null": 9}
 
 
 def test_tense():
-    response = client.get("/ms/tense", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("tense",)})
     assert response.status_code == 200
     assert response.json() == {"pres": 2, "null": 9}
 
 
 def test_transitivity():
-    response = client.get("/ms/transitivity", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("transitivity",)})
     assert response.status_code == 200
     assert response.json() == {"intr": 1, "null": 9, "tran": 1}
 
 
 def test_voice():
-    response = client.get("/ms/voice", params={"text": text})
+    response = client.post("/ms/", json={"text": text, "stats": ("voice",)})
     assert response.status_code == 200
     assert response.json() == {"null": 11}
 
 
 def test_explain_text():
-    response = client.get("/ms/explain?stats=pos&stats=tense", params={"text": text})
+    response = client.post("/ms/explain", json={"text": text, "stats": ("pos", "tense")})
     assert response.status_code == 200
     assert response.json() == [
         ["Живет", {"pos": "VERB", "tense": "pres"}],
@@ -125,5 +144,5 @@ def test_explain_text():
 
 
 def test_explain_text_error():
-    response = client.get("/ms/explain", params={"text": text, "stats": "foo"})
+    response = client.post("/ms/explain", json={"text": text, "stats": ("foo",)})
     assert response.status_code == 404
