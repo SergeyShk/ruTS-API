@@ -1,6 +1,7 @@
-from typing import Any
+from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from ruts import ReadabilityStats
 from ruts.constants import READABILITY_STATS_DESC
 
@@ -11,23 +12,25 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary="Получение вычисленных метрик")
-async def get_stats(text: str) -> Any:
+class Item(BaseModel):
+    text: str
+    stat: Optional[str] = ""
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "text": "Живет свободно только тот, кто находит радость в исполнении своего долга.",
+                "stat": "",
+            }
+        }
+
+
+@router.post("/", summary="Получение вычисленных статистик")
+async def get_stats(item: Item) -> Any:
     """
     Аргументы:
 
     - **text**: текст, для которого вычисляются статистики
-    """
-    rs = ReadabilityStats(text)
-    return rs.get_stats()
-
-
-@router.get("/{stat}", summary="Получение определенной метрики")
-async def get_stat(text: str, stat: str) -> Any:
-    """
-    Аргументы:
-
-    - **text**: текст, для которого вычисляются метрики
     - **stat**: наименование метрики, одно из:
         - **calc_flesch_kincaid_grade**: Тест Флеша-Кинкайда
         - **flesch_reading_easy**: Индекс удобочитаемости Флеша
@@ -36,7 +39,10 @@ async def get_stat(text: str, stat: str) -> Any:
         - **automated_readability_index**: Автоматический индекс удобочитаемости
         - **lix**: Индекс удобочитаемости LIX
     """
-    rs = ReadabilityStats(text)
-    if stat not in READABILITY_STATS_DESC:
+    rs = ReadabilityStats(item.text)
+    if not item.stat:
+        return rs.get_stats()
+    elif item.stat in READABILITY_STATS_DESC:
+        return getattr(rs, item.stat)
+    else:
         raise HTTPException(status_code=404, detail="Некорректно указана метрика")
-    return getattr(rs, stat)
