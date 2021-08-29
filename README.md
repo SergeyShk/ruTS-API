@@ -3,6 +3,43 @@ API для работы с библиотекой ruTS
 
 ## REST API
 
+### `GET` `/version/`
+
+Версия библиотеки.
+
+Пример ответа:
+
+```json
+{
+  "ruts": "0.8.0"
+}
+```
+
+---
+
+### `GET` `/about/`
+
+Описание проекта.
+
+Пример ответа:
+
+```json
+{
+  "name": "ruts",
+  "version": "0.8.0",
+  "summary": "Russian Texts Statistics",
+  "home_page": "https://github.com/SergeyShk/ruTS",
+  "license": "MIT",
+  "keywords": [
+    "NLP,natural,language,processing,CL,computational,linguistics,text,analytics,russian"
+  ],
+  "author": "Шкарин Сергей",
+  "author_email": "kouki.sergey@gmail.com"
+}
+```
+
+---
+
 ### `POST` `/extract/sents/`
 
 Извлечение предложений из текста.

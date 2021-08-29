@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-class Item(BaseModel):
+class ItemReadability(BaseModel):
     text: str
     stat: Optional[str] = ""
 
@@ -26,7 +26,7 @@ class Item(BaseModel):
 
 
 @router.post("/", summary="Получение вычисленных статистик")
-async def get_stats(item: Item) -> Any:
+async def get_stats(item: ItemReadability) -> Any:
     """
     Аргументы:
 

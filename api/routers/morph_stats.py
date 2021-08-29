@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-class Item(BaseModel):
+class ItemMorph(BaseModel):
     text: str
     filter_none: Optional[bool] = False
     stats: Tuple[str, ...] = Query(None, description="Кортеж выбранных статистик")
@@ -28,7 +28,7 @@ class Item(BaseModel):
 
 
 @router.post("/", summary="Получение вычисленных статистик")
-async def get_stats(item: Item) -> Any:
+async def get_stats(item: ItemMorph) -> Any:
     """
     Аргументы:
 
@@ -63,7 +63,7 @@ async def get_stats(item: Item) -> Any:
 
 
 @router.post("/explain", summary="Разбор текста по морфологическим статистикам")
-async def explain_text(item: Item) -> Any:
+async def explain_text(item: ItemMorph) -> Any:
     """
     Аргументы:
 

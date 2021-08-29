@@ -21,6 +21,7 @@ ruts = "*"
 fastapi = "*"
 gunicorn = "*"
 uvicorn = "*"
+importlib-metadata = "^4.8.0"
 
 [tool.poetry.dev-dependencies]
 black = "*"
