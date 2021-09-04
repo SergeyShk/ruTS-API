@@ -14,7 +14,7 @@ before_install:
 install:
     - poetry install
     - python -c "from ruts.datasets import SovChLit; scl = SovChLit(); scl.download()"
-    - python -c "from ruts.datasets import StalinWorks; sw = SovChLit(); sw.download()"
+    - python -c "from ruts.datasets import StalinWorks; sw = StalinWorks(); sw.download()"
 
 script:
     - poetry run pytest --cov api --cov-fail-under 80
