@@ -1,7 +1,14 @@
 from fastapi import FastAPI
 from importlib_metadata import metadata
 
-from .routers import basic_stats, diversity_stats, extractors, morph_stats, readability_stats
+from .routers import (
+    basic_stats,
+    datasets,
+    diversity_stats,
+    extractors,
+    morph_stats,
+    readability_stats,
+)
 
 tags_metadata = [
     {
@@ -24,12 +31,16 @@ tags_metadata = [
         "name": "ds",
         "description": "Вычисление метрик лексического разнообразия текста.",
     },
+    {
+        "name": "datasets",
+        "description": "Работа с текстовыми наборами данных.",
+    },
 ]
 
 api = FastAPI(
     title="ruTS-API",
     description="API для библиотеки ruTS",
-    version="0.7.0",
+    version="0.8.0",
     openapi_tags=tags_metadata,
 )
 
@@ -39,6 +50,7 @@ api.include_router(basic_stats.router)
 api.include_router(morph_stats.router)
 api.include_router(readability_stats.router)
 api.include_router(diversity_stats.router)
+api.include_router(datasets.router)
 
 
 @api.get("/")
