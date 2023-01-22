@@ -15,7 +15,7 @@ text_sents = (
 text_words = "Лучшее время, чтобы посадить дерево, было 20 лет назад."
 
 
-class TestSentsExtractor(object):
+class TestSentsExtractor:
     def test_extract(self):
         response = client.post("/extract/sents", json={"text": text_sents})
         assert response.status_code == 200
@@ -50,7 +50,7 @@ class TestSentsExtractor(object):
         assert len(response.json()) == expected
 
 
-class TestWordsExtractor(object):
+class TestWordsExtractor:
     def test_extract(self):
         response = client.post("/extract/words", json={"text": text_words})
         assert response.status_code == 200

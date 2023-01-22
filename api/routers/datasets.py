@@ -90,18 +90,18 @@ async def get_dataset_scl(item: ItemSovChLit) -> Any:
     - **with_header**: выводить заголовок
     """
     dataset = SovChLit()
-    params = dict(
-        grade=item.grade,
-        book=item.book,
-        year=item.year,
-        category=item.category,
-        text_type=item.text_type,
-        subject=item.subject,
-        author=item.author,
-        min_len=item.min_len,
-        max_len=item.max_len,
-        limit=item.limit,
-    )
+    params = {
+        "grade": item.grade,
+        "book": item.book,
+        "year": item.year,
+        "category": item.category,
+        "text_type": item.text_type,
+        "subject": item.subject,
+        "author": item.author,
+        "min_len": item.min_len,
+        "max_len": item.max_len,
+        "limit": item.limit,
+    }
     if item.with_header:
         return dataset.get_records(**params)
     else:
@@ -125,18 +125,18 @@ async def get_dataset_sw(item: ItemStalinWorks) -> Any:
     - **with_header**: выводить заголовок
     """
     dataset = StalinWorks()
-    params = dict(
-        volume=item.volume,
-        year=item.year,
-        text_type=item.text_type,
-        is_translation=item.is_translation,
-        source=item.source,
-        subject=item.subject,
-        topic=item.topic,
-        min_len=item.min_len,
-        max_len=item.max_len,
-        limit=item.limit,
-    )
+    params = {
+        "volume": item.volume,
+        "year": item.year,
+        "text_type": item.text_type,
+        "is_translation": item.is_translation,
+        "source": item.source,
+        "subject": item.subject,
+        "topic": item.topic,
+        "min_len": item.min_len,
+        "max_len": item.max_len,
+        "limit": item.limit,
+    }
     if item.with_header:
         return dataset.get_records(**params)
     else:

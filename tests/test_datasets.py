@@ -9,7 +9,7 @@ from api.main import api
 client = TestClient(api)
 
 
-class TestSovChLit(object):
+class TestSovChLit:
     def test_get_texts(self):
         response = client.post("/datasets/scl", json={"limit": 2})
         assert response.status_code == 200
@@ -99,7 +99,7 @@ class TestSovChLit(object):
             assert response.status_code == 404
 
 
-class TestStalinWorks(object):
+class TestStalinWorks:
     def test_get_texts(self):
         response = client.post("/datasets/sw", json={"limit": 2})
         assert response.status_code == 200
