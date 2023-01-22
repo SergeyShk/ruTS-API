@@ -28,8 +28,8 @@ clean-test: ## Удалить артефакты тестирования
 	rm -fr .pytest_cache
 	rm -fr .mypy_cache
 
-lint: ## Проверить код с помощью flake8
-	poetry run flakehell lint api tests
+lint: ## Проверить код с помощью ruff
+	poetry run ruff api tests
 
 reformat: ## Форматировать код с помощью black
 	poetry run black --config pyproject.toml api tests
